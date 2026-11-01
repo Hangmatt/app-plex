@@ -4,6 +4,10 @@ configuration:
     name: Log level
     description: >-
       Controls the level of log details the app provides.
+  channel:
+    name: Channel
+    description: >-
+      The update channel to track for Plex Media Server updates (public, beta, or disabled).
   claim_code:
     name: Claim code
     description: >-

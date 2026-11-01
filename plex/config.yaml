@@ -1,6 +1,6 @@
 ---
 name: Plex Media Server
-version: dev
+version: 1.43.5.11029-6bf8af3f0
 slug: plex
 description: Recorded media, live TV, online news, and podcasts ready to stream.
 url: https://github.com/hassio-addons/app-plex
@@ -48,7 +48,9 @@ backup_exclude:
   - "**/Plex Media Server/Media/**"
   - "**/Plex Media Server/Metadata/**"
 options:
+  channel: public
   claim_code: ""
 schema:
   log_level: list(trace|debug|info|notice|warning|error|fatal)?
+  channel: list(disabled|public|beta)?
   claim_code: str

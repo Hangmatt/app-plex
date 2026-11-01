@@ -107,3 +107,19 @@ if bashio::var.has_value "${claim_code}" && [[ "${previous_claim_code}" != "${cl
     setPref "PlexOnlineToken" "${token}"
     echo "${claim_code}" > "${claim}"
 fi
+
+# ------------------------------------------------------------------------------
+# Check for Plex updates on startup
+# ------------------------------------------------------------------------------
+channel="public"
+if bashio::config.has_value "channel"; then
+    channel=$(bashio::config 'channel')
+fi
+
+if [[ "${channel}" != "disabled" ]]; then
+    if bashio::fs.file_exists "/etc/s6-overlay/scripts/update-check.sh"; then
+        bashio::log.info "Checking for Plex Media Server updates..."
+        /etc/s6-overlay/scripts/update-check.sh || true
+    fi
+fi
+

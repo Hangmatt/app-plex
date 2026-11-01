@@ -57,6 +57,49 @@ more severe level, e.g., `debug` also shows `info` messages. By default,
 the `log_level` is set to `info`, which is the recommended setting unless
 you are troubleshooting.
 
+### Option: `channel`
+
+Specifies the release channel used to automatically check for and install
+Plex Media Server updates:
+
+- `public` (default): Tracks official public releases.
+- `beta`: Tracks Plex Pass preview/beta releases. Requires your server to be
+  claimed with an active Plex Pass subscription. If no valid token is found,
+  it falls back to the `public` channel.
+- `disabled`: Disables automatic update checking and installation.
+
+Update checks run automatically every time the app boots or restarts.
+
+#### Automated Updates via Home Assistant
+
+Because updates are checked and applied on startup, you can externalise the
+update cycle using Home Assistant's native Plex integration `update` entity
+(e.g., `update.plex_server_update` or `update.plex_media_server_*`).
+
+You can configure an automation in Home Assistant to automatically restart
+the Plex app when an update is available (for instance, during off-peak hours
+when no one is streaming):
+
+```yaml
+automation:
+  - id: auto_update_plex_media_server
+    alias: "Plex: Auto Update Media Server"
+    trigger:
+      - platform: state
+        entity_id: update.plex_server_update
+        to: "on"
+        for:
+          hours: 1
+    condition:
+      - condition: time
+        after: "03:00:00"
+        before: "06:00:00"
+    action:
+      - action: homeassistant.restart_addon
+        data:
+          addon: a0d7b954_plex # Or your specific app slug
+```
+
 ### Option: `claim_code`
 
 To allow your server to sign-in to your Plex account, it needs a so-called
