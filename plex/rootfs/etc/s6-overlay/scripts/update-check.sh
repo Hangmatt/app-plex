@@ -35,12 +35,9 @@ if [[ "${channel,,}" = "beta" ]]; then
 fi
 
 # Detect system architecture
-arch=""
-if bashio::function_exists "bashio::info.arch"; then
+arch=$(dpkg --print-architecture 2>/dev/null || echo "")
+if [[ -z "${arch}" ]] && declare -F bashio::info.arch >/dev/null 2>&1; then
     arch=$(bashio::info.arch)
-fi
-if [[ -z "${arch}" ]]; then
-    arch=$(dpkg --print-architecture 2>/dev/null || echo "")
 fi
 
 case "${arch}" in
@@ -161,9 +158,9 @@ bashio::log.info "Plex Media Server successfully updated to ${remote_version}."
 # If Plex Media Server is actively running, restart the add-on to apply update
 if pgrep -f "/usr/lib/plexmediaserver/Plex Media Server" >/dev/null 2>&1; then
     bashio::log.info "Plex Media Server is running; restarting add-on to apply update..."
-    if bashio::function_exists "bashio::app.restart"; then
+    if declare -F bashio::app.restart >/dev/null 2>&1; then
         bashio::app.restart
-    elif bashio::function_exists "bashio::addon.restart"; then
+    elif declare -F bashio::addon.restart >/dev/null 2>&1; then
         bashio::addon.restart
     else
         bashio::log.warning "Please restart the add-on to run the updated version."
