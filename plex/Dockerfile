@@ -1,4 +1,4 @@
-ARG BUILD_FROM=ghcr.io/hassio-addons/debian-base:9.3.0
+ARG BUILD_FROM=ghcr.io/hassio-addons/debian-base:9.5.1
 # hadolint ignore=DL3006
 FROM ${BUILD_FROM}
 
@@ -7,7 +7,7 @@ SHELL ["/bin/bash", "-o", "pipefail", "-c"]
 
 # Setup base system
 ARG BUILD_ARCH=amd64
-ARG PLEX_VERSION=1.43.3.10828-00f62d37d
+ARG PLEX_VERSION=1.43.5.11029-6bf8af3f0
 
 # hadolint ignore=DL3008
 RUN \
@@ -17,7 +17,7 @@ RUN \
     \
     && apt-get install -y --no-install-recommends \
         xmlstarlet>="1.6.1-4" \
-        uuid-runtime=2.41-5 \
+        uuid-runtime=2.41.5-0+deb13u1 \
         unrar=1:7.1.8-1 \
     \
     && if [ "${BUILD_ARCH}" = "aarch64" ]; then ARCH="arm64"; fi \
